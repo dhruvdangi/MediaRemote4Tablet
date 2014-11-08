@@ -10,13 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <TextView
-        android:id="@+id/logdata"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/last_playing_button"
-        android:text="defaultText" />
-
     <ListView
         android:id="@+id/videos_list"
         android:layout_below="@id/last_playing_button"

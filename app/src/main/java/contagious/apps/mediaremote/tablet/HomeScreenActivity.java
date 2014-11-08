@@ -26,13 +26,22 @@ public class HomeScreenActivity extends Activity {
 
     class VideoListItem {
         public String path;
-        public String title;
-        public String duration;
+        public String displayName;
+        public int duration;
+        public String dataPath;
+        public String resolution;
+        public int size;
+        public Bitmap thumbnail;
 
-        public VideoListItem(String path, String title, String duration) {
+        public VideoListItem(String path, String displayName, int duration, String dataPath, String resolution, int size, Bitmap thumbnail) {
             this.path = path;
-            this.title = title;
+            this.displayName = displayName;
             this.duration = duration;
+            this.dataPath = dataPath;
+            this.resolution = resolution;
+            this.size = size;
+            this.thumbnail = thumbnail;
+
         }
     }
 
@@ -66,7 +75,7 @@ public class HomeScreenActivity extends Activity {
             }
 
             viewHolder.videoThumbnail.setImageBitmap(BitmapFactory.decodeFile(video.path));
-            viewHolder.videoTitle.setText(video.title);
+            viewHolder.videoTitle.setText(video.displayName);
             viewHolder.videoDuration.setText(video.duration);
 
             return convertView;
@@ -78,7 +87,7 @@ public class HomeScreenActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        ArrayList<VideoListItem> videos = new ArrayList<VideoListItem>();
+        ArrayList<VideoListItem> videoArrayList = new ArrayList<VideoListItem>();
 
         ////// populate the videos ArrayList //////
         ContentResolver contentResolver = getContentResolver();
@@ -97,10 +106,11 @@ public class HomeScreenActivity extends Activity {
                 String dataPath = cursor.getString(3);
                 String resolution = cursor.getString(4);
                 int size = cursor.getInt(5);
-
                 Bitmap thumbnail = MediaStore.Video.Thumbnails.getThumbnail(contentResolver, id, MediaStore.Video.Thumbnails.MICRO_KIND, null);
                 if (thumbnail == null)
                     thumbnail = ThumbnailUtils.createVideoThumbnail(dataPath, MediaStore.Video.Thumbnails.MICRO_KIND);
+                VideoListItem videoListItem = new VideoListItem(dataPath, displayName, duration, dataPath, resolution, size, thumbnail);
+                videoArrayList.add(videoListItem);
             } while(cursor.moveToNext());
         }
 
@@ -117,7 +127,7 @@ public class HomeScreenActivity extends Activity {
 //            }
 //        }
 
-        VideoListAdapter adapter = new VideoListAdapter(this, videos);
+        VideoListAdapter adapter = new VideoListAdapter(this, videoArrayList);
         ListView videosList = (ListView) findViewById(R.id.videos_list);
         videosList.setAdapter(adapter);
     }
