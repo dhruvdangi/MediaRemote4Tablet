@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Media Remote</string>
+    <string name="last_playing">Last Playing</string>
+    <string name="video_thumbnail">Video Thumbnail</string>
+    <string name="action_settings">Settings</string>
+
+</resources>
