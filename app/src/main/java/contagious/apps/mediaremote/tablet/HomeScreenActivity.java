@@ -4,11 +4,12 @@ import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -91,18 +92,15 @@ public class HomeScreenActivity extends Activity {
         if (cursor.moveToFirst()) {
             do {
                 int id = cursor.getInt(0);
-                String thumbnailPath = cursor.getString(0);
                 String displayName = cursor.getString(1);
                 int duration = cursor.getInt(2);
                 String dataPath = cursor.getString(3);
                 String resolution = cursor.getString(4);
                 int size = cursor.getInt(5);
 
-                StringBuilder a = new StringBuilder();
-                a.append(id); a.append("\t"); a.append(displayName); a.append("\t"); a.append(duration); a.append("\t");
-                a.append(dataPath); a.append("\t"); a.append(resolution); a.append("\t"); a.append(size);
-                Log.d("Cursor", a.toString());
-
+                Bitmap thumbnail = MediaStore.Video.Thumbnails.getThumbnail(contentResolver, id, MediaStore.Video.Thumbnails.MICRO_KIND, null);
+                if (thumbnail == null)
+                    thumbnail = ThumbnailUtils.createVideoThumbnail(dataPath, MediaStore.Video.Thumbnails.MICRO_KIND);
             } while(cursor.moveToNext());
         }
 
