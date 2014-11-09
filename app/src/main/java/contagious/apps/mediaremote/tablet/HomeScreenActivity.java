@@ -5,7 +5,6 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
@@ -25,16 +24,14 @@ import java.util.ArrayList;
 public class HomeScreenActivity extends Activity {
 
     class VideoListItem {
-        public String path;
         public String displayName;
-        public int duration;
+        public String duration;
         public String dataPath;
         public String resolution;
-        public int size;
+        public String size;
         public Bitmap thumbnail;
 
-        public VideoListItem(String path, String displayName, int duration, String dataPath, String resolution, int size, Bitmap thumbnail) {
-            this.path = path;
+        public VideoListItem(String displayName, String duration, String dataPath, String resolution, String size, Bitmap thumbnail) {
             this.displayName = displayName;
             this.duration = duration;
             this.dataPath = dataPath;
@@ -50,6 +47,7 @@ public class HomeScreenActivity extends Activity {
             ImageView videoThumbnail;
             TextView videoTitle;
             TextView videoDuration;
+            TextView videoSize;
         }
 
         public VideoListAdapter(Context context, ArrayList<VideoListItem> videos) {
@@ -67,27 +65,32 @@ public class HomeScreenActivity extends Activity {
                 viewHolder = new ViewHolder();
                 LayoutInflater inflator = LayoutInflater.from(getContext());
                 convertView = inflator.inflate(R.layout.videos_list_item, parent, false);
+                convertView.setTag(viewHolder);
                 viewHolder.videoThumbnail = (ImageView) convertView.findViewById(R.id.videos_list_item_thumbnail);
                 viewHolder.videoTitle = (TextView) convertView.findViewById(R.id.videos_list_item_title);
                 viewHolder.videoDuration = (TextView) convertView.findViewById(R.id.videos_list_item_duration);
+                viewHolder.videoSize = (TextView) convertView.findViewById(R.id.videos_list_item_size);
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
 
-            viewHolder.videoThumbnail.setImageBitmap(BitmapFactory.decodeFile(video.path));
+            viewHolder.videoThumbnail.setImageBitmap(video.thumbnail);
             viewHolder.videoTitle.setText(video.displayName);
             viewHolder.videoDuration.setText(video.duration);
-
+            viewHolder.videoSize.setText(video.size);
             return convertView;
         }
     }
+
+    ArrayList<VideoListItem> videoArrayList;
+    ListView videosList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        ArrayList<VideoListItem> videoArrayList = new ArrayList<VideoListItem>();
+        videoArrayList = new ArrayList<VideoListItem>();
 
         ////// populate the videos ArrayList //////
         ContentResolver contentResolver = getContentResolver();
@@ -102,34 +105,39 @@ public class HomeScreenActivity extends Activity {
             do {
                 int id = cursor.getInt(0);
                 String displayName = cursor.getString(1);
-                int duration = cursor.getInt(2);
+                String duration = timeFormatter(cursor.getInt(2));
                 String dataPath = cursor.getString(3);
                 String resolution = cursor.getString(4);
-                int size = cursor.getInt(5);
-                Bitmap thumbnail = MediaStore.Video.Thumbnails.getThumbnail(contentResolver, id, MediaStore.Video.Thumbnails.MICRO_KIND, null);
+                String size = humanReadableByteCount(cursor.getInt(5));
+
+                Bitmap thumbnail = MediaStore.Video.Thumbnails.getThumbnail(contentResolver, id, MediaStore.Video.Thumbnails.MINI_KIND, null);
                 if (thumbnail == null)
-                    thumbnail = ThumbnailUtils.createVideoThumbnail(dataPath, MediaStore.Video.Thumbnails.MICRO_KIND);
-                VideoListItem videoListItem = new VideoListItem(dataPath, displayName, duration, dataPath, resolution, size, thumbnail);
+                    thumbnail = ThumbnailUtils.createVideoThumbnail(dataPath, MediaStore.Video.Thumbnails.MINI_KIND);
+
+                VideoListItem videoListItem = new VideoListItem(displayName, duration, dataPath, resolution, size, thumbnail);
                 videoArrayList.add(videoListItem);
             } while(cursor.moveToNext());
         }
 
-//        String[] projection = { MediaStore.Video.Media._ID };
-//        Cursor cursor = new CursorLoader(this, MediaStore.Video.Media.EXTERNAL_CONTENT_URI, projection,
-//                null, null, null).loadInBackground();
-//
-//        if (cursor.moveToFirst()) {
-//            while (cursor.moveToNext()) {
-//                StringBuilder cols = new StringBuilder();
-//                for (int i = 0; i < cursor.getColumnCount(); i++)
-//                    cols.append(cursor.getString(i));
-//                Log.i("CursorData", cols.toString());
-//            }
-//        }
-
         VideoListAdapter adapter = new VideoListAdapter(this, videoArrayList);
-        ListView videosList = (ListView) findViewById(R.id.videos_list);
+        videosList = (ListView) findViewById(R.id.videos_list);
         videosList.setAdapter(adapter);
+    }
+
+    private String timeFormatter(int milliseconds) {
+        int seconds = milliseconds / 1000;
+        long s = seconds % 60;
+        long m = (seconds / 60) % 60;
+        long h = (seconds / (60 * 60)) % 24;
+        return String.format("%d:%02d:%02d", h,m,s);
+    }
+
+    public static String humanReadableByteCount(long bytes) {
+        int unit = 1024;
+        if (bytes < unit) return bytes + " B";
+        int exp = (int) (Math.log(bytes) / Math.log(unit));
+        String pre = "KMGTPE".substring(exp-1, exp);
+        return String.format("%.1f %sB", bytes / Math.pow(unit, exp), pre);
     }
 
     @Override
