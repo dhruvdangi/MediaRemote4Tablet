@@ -3,6 +3,7 @@ package contagious.apps.mediaremote.tablet;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
@@ -14,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -84,7 +86,7 @@ public class HomeScreenActivity extends Activity {
 
     ArrayList<VideoListItem> videoArrayList;
     ListView videosList;
-
+    public static String VIDEO_PATH_TAG = "dataPath";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,6 +124,15 @@ public class HomeScreenActivity extends Activity {
         VideoListAdapter adapter = new VideoListAdapter(this, videoArrayList);
         videosList = (ListView) findViewById(R.id.videos_list);
         videosList.setAdapter(adapter);
+        videosList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent startVideoActivity = new Intent(getBaseContext(),VideoActivity.class);
+                startVideoActivity.putExtra(VIDEO_PATH_TAG,videoArrayList.get(position).dataPath);
+                startActivity(startVideoActivity);
+
+            }
+        });
     }
 
     private String timeFormatter(int milliseconds) {
