@@ -5,5 +5,7 @@
     <string name="last_playing">Last Playing</string>
     <string name="video_thumbnail">Video Thumbnail</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_video">VideoActivity</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>
