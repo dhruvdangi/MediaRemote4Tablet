@@ -1,6 +1,7 @@
 package contagious.apps.mediaremote.tablet;
 
 import android.app.Activity;
+import android.content.pm.ActivityInfo;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Build;
@@ -21,16 +22,27 @@ public class VideoActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
+
         videoPath = getIntent().getStringExtra(HomeScreenActivity.VIDEO_PATH_TAG);
         videoView = (VideoView) findViewById(R.id.video_view);
         mediaMetadataRetriever = new MediaMetadataRetriever();
         mediaMetadataRetriever.setDataSource(videoPath);
         mediaController = new MediaController(this, false);
 
+        String rotation = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION);
+        boolean forceLandscape = rotation.equals("90");
+
         Uri uri = Uri.parse(videoPath);
         videoView.setVideoURI(uri);
         videoView.setMediaController(mediaController);
         videoView.requestFocus();
+
+        // Set Orientation
+        String orientation = getIntent().getStringExtra(HomeScreenActivity.ORIENTATION_TAG);
+        if (forceLandscape || orientation.equals(HomeScreenActivity.PORTRAIT_TAG))
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        else if (orientation.equals(HomeScreenActivity.LANDSCAPE_TAG))
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
     }
 
     @Override

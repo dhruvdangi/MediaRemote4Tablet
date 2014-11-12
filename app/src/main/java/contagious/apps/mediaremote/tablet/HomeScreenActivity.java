@@ -20,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -40,7 +41,6 @@ public class HomeScreenActivity extends Activity {
             this.resolution = resolution;
             this.size = size;
             this.thumbnail = thumbnail;
-
         }
     }
 
@@ -85,6 +85,9 @@ public class HomeScreenActivity extends Activity {
     }
 
     public static String VIDEO_PATH_TAG = "video_path";
+    public static String ORIENTATION_TAG = "orientation";
+    public static String LANDSCAPE_TAG = "landscape";
+    public static String PORTRAIT_TAG = "portrait";
 
     private ArrayList<VideoListItem> videoArrayList;
     private ListView videosList;
@@ -98,7 +101,7 @@ public class HomeScreenActivity extends Activity {
 
         ////// populate the videos ArrayList //////
         ContentResolver contentResolver = getContentResolver();
-        Uri videosUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+        final Uri videosUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
         String[] projection = {MediaStore.Video.Media._ID, MediaStore.Video.VideoColumns.DISPLAY_NAME,
                                MediaStore.Video.VideoColumns.DURATION, MediaStore.Video.VideoColumns.DATA,
                                MediaStore.Video.VideoColumns.RESOLUTION, MediaStore.Video.VideoColumns.SIZE};
@@ -129,11 +132,19 @@ public class HomeScreenActivity extends Activity {
         videosList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent startVideoActivity = new Intent(getBaseContext(), VideoActivity.class);
-                startVideoActivity.putExtra(VIDEO_PATH_TAG,videoArrayList.get(position).dataPath);
-                startActivity(startVideoActivity);
+                Intent intent = new Intent(getBaseContext(), VideoActivity.class);
+                intent.putExtra(VIDEO_PATH_TAG, videoArrayList.get(position).dataPath);
+                intent.putExtra(ORIENTATION_TAG, getOrientation(videoArrayList.get(position).resolution));
+                startActivity(intent);
             }
         });
+    }
+
+    private String getOrientation(String resolution) {
+        int xIndex = resolution.indexOf("x");
+        double width = Double.parseDouble(resolution.substring(0, xIndex));
+        double height = Double.parseDouble(resolution.substring(xIndex + 1));
+        return width / height > 1 ? LANDSCAPE_TAG : PORTRAIT_TAG;
     }
 
     private String timeFormatter(int milliseconds) {
