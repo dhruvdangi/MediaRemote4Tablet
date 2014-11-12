@@ -84,9 +84,11 @@ public class HomeScreenActivity extends Activity {
         }
     }
 
-    ArrayList<VideoListItem> videoArrayList;
-    ListView videosList;
-    public static String VIDEO_PATH_TAG = "dataPath";
+    public static String VIDEO_PATH_TAG = "video_path";
+
+    private ArrayList<VideoListItem> videoArrayList;
+    private ListView videosList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,10 +129,9 @@ public class HomeScreenActivity extends Activity {
         videosList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent startVideoActivity = new Intent(getBaseContext(),VideoActivity.class);
+                Intent startVideoActivity = new Intent(getBaseContext(), VideoActivity.class);
                 startVideoActivity.putExtra(VIDEO_PATH_TAG,videoArrayList.get(position).dataPath);
                 startActivity(startVideoActivity);
-
             }
         });
     }
