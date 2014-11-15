@@ -14,8 +14,8 @@ import android.widget.VideoView;
 public class VideoActivity extends Activity {
 
     private String videoPath;
-    private VideoView videoView;
-    private MediaController mediaController;
+    public static VideoView videoView;
+    public static MediaController mediaController;
     private MediaMetadataRetriever mediaMetadataRetriever;
 
     @Override

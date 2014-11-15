@@ -1,0 +1,59 @@
+[33mcommit 19588f8cff9b7d9993a08d454302d77dcf21d9c8[m
+Author: Sourabh Verma <sourabh.coder@gmail.com>
+Date:   Thu Nov 13 05:14:06 2014 +0530
+
+    Control screen orientation manually
+
+[33mcommit 12ec150ed8872f138263433a8334fd013a94b876[m
+Author: Sourabh Verma <sourabh.coder@gmail.com>
+Date:   Thu Nov 13 04:04:45 2014 +0530
+
+    Add MediaController
+
+[33mcommit 50470e883b0c0db38d125fa32950b1d89991a3ca[m
+Merge: c544aba 61bc30d
+Author: Sourabh Verma <sourabh.coder@gmail.com>
+Date:   Tue Nov 11 03:12:13 2014 +0530
+
+    Merge pull request #2 from dhruvdangi/master
+    
+    Implement core VideoView
+
+[33mcommit 61bc30d0e3c04464fc11407fbced59951a106365[m
+Author: dhruvdangi <dhruvdangi@gmail.com>
+Date:   Tue Nov 11 02:03:14 2014 +0530
+
+    Implement core Videoview
+
+[33mcommit c544abad3f33fc7bc8dcd66ca84c4fb8e590bd54[m
+Author: Sourabh Verma <sourabh.coder@gmail.com>
+Date:   Sun Nov 9 17:51:54 2014 +0530
+
+    Configure VideoArrayAdapter
+
+[33mcommit 7f8055fa5265aa5dbdbd8d904ca432e28a82f97d[m
+Merge: 5e78a65 78c62ee
+Author: Sourabh Verma <sourabh.coder@gmail.com>
+Date:   Sun Nov 9 02:46:31 2014 +0530
+
+    Merge pull request #1 from dhruvdangi/master
+    
+    Add MediaStore entries in videoArrayList
+
+[33mcommit 78c62eef7f16e01ee40c90ad888a298cbb68714e[m
+Author: dhruvdangi <dhruvdangi@gmail.com>
+Date:   Sun Nov 9 02:44:22 2014 +0530
+
+    Add MediaStore entries in videoArrayList
+
+[33mcommit 5e78a6586342d00a100501d7c4426dafa4f3c1b0[m
+Author: Sourabh Verma <sourabh.coder@gmail.com>
+Date:   Sun Nov 9 01:55:12 2014 +0530
+
+    Update HomeScreenActivity
+
+[33mcommit 2e7f6d75eec54945a994117dd26321c75acd5bc0[m
+Author: Sourabh Verma <sourabh.coder@gmail.com>
+Date:   Sun Nov 9 00:16:46 2014 +0530
+
+    Initial Commit & Add HomeScreenActivity
