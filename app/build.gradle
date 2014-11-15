@@ -20,5 +20,6 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile files('/home/dhruvdangi/Workspace/MediaRemote4Tablet/libs/QRemoteSDK.jar')
 }

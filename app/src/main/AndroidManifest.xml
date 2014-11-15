@@ -22,9 +22,11 @@
         <activity
             android:name=".VideoActivity"
             android:label="@string/title_activity_video"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen"
             android:configChanges="keyboardHidden|orientation|screenSize">
         </activity>
+        <service android:name=".PhoneService"/>
+
     </application>
 
 </manifest>
