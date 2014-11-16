@@ -10,22 +10,19 @@ import android.view.View;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
-
 public class VideoActivity extends Activity {
 
-    private String videoPath;
     public static VideoView videoView;
     public static MediaController mediaController;
-    private MediaMetadataRetriever mediaMetadataRetriever;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
 
-        videoPath = getIntent().getStringExtra(HomeScreenActivity.VIDEO_PATH_TAG);
+        String videoPath = getIntent().getStringExtra(HomeScreenActivity.VIDEO_PATH_TAG);
         videoView = (VideoView) findViewById(R.id.video_view);
-        mediaMetadataRetriever = new MediaMetadataRetriever();
+        MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
         mediaMetadataRetriever.setDataSource(videoPath);
         mediaController = new MediaController(this, false);
 
