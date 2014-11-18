@@ -27,9 +27,12 @@
             android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen"
             android:configChanges="keyboardHidden|orientation|screenSize">
         </activity>
-
-        <service android:name=".PhoneService" />
-
+        <receiver android:name=".MediaRemoteBroadcastReceiver">
+            <intent-filter>
+                <action android:name="contagious.apps.mediaremote.tablet.MediaRemoteBroadcastReceiver">
+                </action>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

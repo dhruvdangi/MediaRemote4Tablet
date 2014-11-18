@@ -1,21 +1,20 @@
 package contagious.apps.mediaremote.tablet;
 
-import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
-import android.os.IBinder;
 
-public class PhoneService extends Service {
+public class MediaRemoteBroadcastReceiver extends BroadcastReceiver {
 
     @Override
-    public IBinder onBind(Intent intent) {
+    public void onReceive(Context context, Intent intent) {
+
         String action = intent.getStringExtra("ACTION");
 
         if (action.equals("PAUSE"))
             VideoActivity.videoView.pause();
         else if (action.equals("PLAY"))
             VideoActivity.videoView.start();
-
-        return null;
     }
 
 }
